@@ -5,7 +5,7 @@
 
 架构图：
 
-![transfer-engine.png](../../attachments/transfer-engine.png)
+![transfer-engine.png](../attachments/transfer-engine.png)
 
 
 ```cpp
