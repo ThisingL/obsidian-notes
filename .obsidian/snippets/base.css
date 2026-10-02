@@ -1,0 +1,376 @@
+/*
+ * ========================================
+ * Thising Obsidian Knowledge Base
+ * Migrated from personal Typora theme
+ * ========================================
+ *
+ * 原则：
+ * 1. 保留 Typora 使用习惯
+ * 2. 尽量不覆盖 Gruvbox 的主题颜色
+ * 3. 同时适配编辑模式 / 阅读模式
+ */
+
+
+/* =========================================================
+ * 1. 全局 Typography
+ * ========================================================= */
+
+body {
+    /*
+     * 如果系统已经安装 Hack，可以直接使用。
+     * 中文 fallback 交给系统字体。
+     *
+     * 这两行是「主题层」字体，作为设置里字体为空时的兜底；
+     * 在外观设置里选过字体就会优先那里。
+     */
+    --font-text-theme:
+        "Hack",
+        "Droid Sans Fallback",
+        "Microsoft YaHei",
+        monospace;
+
+    --font-monospace-theme:
+        "Hack",
+        "Droid Sans Fallback",
+        "Cascadia Code",
+        "Consolas",
+        monospace;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+ * 2. 响应式正文宽度
+ *
+ * 基本复刻你 Typora 的逻辑
+ * ========================================================= */
+
+body {
+    --file-line-width: 860px;
+}
+
+@media only screen and (min-width: 1400px) {
+    body {
+        --file-line-width: 1024px;
+    }
+}
+
+@media only screen and (min-width: 1800px) {
+    body {
+        --file-line-width: 1200px;
+    }
+}
+
+@media only screen and (min-width: 2000px) {
+    body {
+        --file-line-width: 1600px;
+    }
+}
+
+
+/* =========================================================
+ * 3. 正文留白
+ * ========================================================= */
+
+/* 阅读模式 */
+.markdown-preview-view .markdown-preview-sizer {
+    padding-top: 30px;
+    padding-bottom: 100px;
+}
+
+/* 编辑模式 */
+.markdown-source-view.mod-cm6 .cm-contentContainer {
+    padding-top: 20px;
+    padding-bottom: 100px;
+}
+
+
+/* =========================================================
+ * 4. 标题
+ * ========================================================= */
+
+.markdown-rendered h1,
+.markdown-rendered h2,
+.markdown-rendered h3,
+.markdown-rendered h4,
+.markdown-rendered h5,
+.markdown-rendered h6 {
+    position: relative;
+
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+
+    font-weight: bold;
+    line-height: 1.4;
+}
+
+
+/* ---------- Reading Mode ---------- */
+
+.markdown-rendered h1 {
+    font-size: 2.25em;
+    line-height: 1.2;
+
+    border-bottom: 1px solid var(--background-modifier-border);
+    padding-bottom: 0.3em;
+}
+
+.markdown-rendered h2 {
+    font-size: 1.75em;
+    line-height: 1.225;
+
+    border-bottom: 1px solid var(--background-modifier-border);
+    padding-bottom: 0.25em;
+}
+
+.markdown-rendered h3 {
+    font-size: 1.5em;
+    line-height: 1.43;
+}
+
+.markdown-rendered h4 {
+    font-size: 1.25em;
+}
+
+.markdown-rendered h5 {
+    font-size: 1em;
+}
+
+.markdown-rendered h6 {
+    font-size: 1em;
+    color: var(--text-muted);
+}
+
+
+/* ---------- Editing Mode ---------- */
+
+.markdown-source-view.mod-cm6 .HyperMD-header-1 {
+    font-size: 2.25em;
+    line-height: 1.2;
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-header-2 {
+    font-size: 1.75em;
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-header-3 {
+    font-size: 1.5em;
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-header-4 {
+    font-size: 1.25em;
+}
+
+
+/* =========================================================
+ * 5. 段落 / List
+ * ========================================================= */
+
+.markdown-rendered p {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+}
+
+.markdown-rendered blockquote,
+.markdown-rendered ul,
+.markdown-rendered ol,
+.markdown-rendered dl,
+.markdown-rendered table {
+    margin-top: 0.6em;
+    margin-bottom: 0.6em;
+}
+
+.markdown-rendered ul,
+.markdown-rendered ol {
+    padding-left: 30px;
+}
+
+.markdown-rendered li > ol,
+.markdown-rendered li > ul {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+
+/* =========================================================
+ * 6. Blockquote
+ * ========================================================= */
+
+.markdown-rendered blockquote {
+    border-left: 4px solid var(--background-modifier-border-hover);
+
+    padding: 0 15px;
+    margin-left: 0;
+
+    color: var(--text-muted);
+}
+
+
+/* =========================================================
+ * 7. Inline Code
+ *
+ * 保留你 Typora 最有辨识度的一部分
+ * ========================================================= */
+
+/* Reading Mode */
+.markdown-rendered :not(pre) > code {
+    background-color: rgba(199, 37, 78, 0.10);
+    color: #c7254e;
+
+    padding: 2px 4px;
+
+    border-radius: 3px;
+    border: none;
+
+    font-family: var(--font-monospace);
+
+    font-size: 0.9em;
+
+    white-space: nowrap;
+}
+
+
+/* Editing Mode */
+.markdown-source-view.mod-cm6 .cm-inline-code {
+    background-color: rgba(199, 37, 78, 0.10);
+    color: #c7254e;
+
+    padding: 1px 3px;
+
+    border-radius: 3px;
+
+    font-family: var(--font-monospace);
+
+    font-size: 0.9em;
+}
+
+
+/* =========================================================
+ * 8. Code Block
+ * ========================================================= */
+
+.markdown-rendered pre {
+    margin-top: 15px;
+    margin-bottom: 15px;
+
+    padding: 10px 12px;
+
+    border-radius: 4px;
+
+    line-height: 1.55;
+
+    overflow-x: auto;
+}
+
+.markdown-rendered pre code {
+    font-family: var(--font-monospace);
+
+    font-size: 0.9em;
+
+    /*
+     * 防止 inline code 样式污染代码块
+     */
+    background: transparent;
+    color: inherit;
+
+    padding: 0;
+    white-space: pre;
+}
+
+
+/* 编辑模式代码块 */
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock {
+    font-family: var(--font-monospace);
+
+    font-size: 0.9em;
+}
+
+
+/* =========================================================
+ * 9. Table
+ * ========================================================= */
+
+.markdown-rendered table {
+    width: fit-content;
+    max-width: 100%;
+
+    border-collapse: collapse;
+
+    word-break: initial;
+}
+
+.markdown-rendered table th,
+.markdown-rendered table td {
+    border: 1px solid var(--background-modifier-border);
+
+    padding: 6px 13px;
+}
+
+.markdown-rendered table th {
+    font-weight: 400;
+}
+
+.markdown-rendered table tr:nth-child(2n) {
+    background-color: var(--background-secondary);
+}
+
+
+/* =========================================================
+ * 10. Horizontal Rule
+ * ========================================================= */
+
+.markdown-rendered hr {
+    height: 2px;
+
+    padding: 0;
+    margin: 16px 0;
+
+    background-color: var(--background-modifier-border);
+
+    border: 0;
+}
+
+
+/* =========================================================
+ * 11. Links
+ *
+ * 默认建议让 Gruvbox 管颜色
+ * 如果想恢复 Typora 蓝色，再打开下面这段
+ * ========================================================= */
+
+/*
+.markdown-rendered a,
+.markdown-source-view.mod-cm6 .cm-link,
+.markdown-source-view.mod-cm6 .cm-hmd-internal-link {
+    color: #4183C4;
+}
+*/
+
+
+/* =========================================================
+ * 12. Image
+ * ========================================================= */
+
+.markdown-rendered img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* =========================================================
+ * 13. Mermaid
+ * ========================================================= */
+
+.markdown-rendered .mermaid {
+    overflow-x: auto;
+}
+
+
+/* =========================================================
+ * 14. Embed
+ * ========================================================= */
+
+.markdown-embed {
+    padding: 0.8em 1em;
+}

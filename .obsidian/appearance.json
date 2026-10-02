@@ -1,0 +1,14 @@
+{
+  "accentColor": "",
+  "theme": "moonstone",
+  "cssTheme": "Minimal",
+  "textFontFamily": "Hack,Droid Sans Fallback",
+  "interfaceFontFamily": "Hack,Droid Sans Fallback",
+  "monospaceFontFamily": "Hack,文鼎签字笔体G30",
+  "baseFontSizeAction": true,
+  "baseFontSize": 20,
+  "enabledCssSnippets": [
+    "base",
+    "github-markdown"
+  ]
+}

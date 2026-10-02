@@ -1,0 +1,142 @@
+/* =============================================================================
+   GitHub 配色层（配合 base.css 使用）
+   =============================================================================
+   分工：
+     - base.css        负责排版指标（字号、间距、宽度、字体），保持不动
+     - 本文件          只负责「配色」+ base.css 缺的几处，不重复定义排版规则
+   颜色来源：GitHub 官方 github-markdown-css v5（亮/暗两套变量）
+            + 你自己 Typora github.css 的取舍（行内代码粉色保留在 base.css 里）
+
+   使用前提：
+     1. 外观 → 主题：选「默认」或 Minimal（不要用 gruvbox / Things，否则界面暖色会和这里打架）
+     2. 外观 → 基础颜色：浅色 = GitHub 亮色；深色 = GitHub Dark
+     3. base.css 与 github-markdown.css 两个片段都启用
+   ============================================================================= */
+
+/* -----------------------------------------------------------------------------
+   1. 把 Obsidian 自己的变量重映射到 GitHub 调色板
+      这是本文件的核心手段：base.css 里所有 var(--background-modifier-border)
+      之类的引用会自动跟着变成 GitHub 的颜色，无需逐条改写规则。
+   -------------------------------------------------------------------------- */
+/* 想调对比度，就只改这几个值，其它规则都会跟着变 */
+
+.theme-light {
+  --gh-page: #fafafa;            /* 笔记纸面色：Typora 原值。想更白改 #ffffff，想更暗改 #f6f8fa */
+  --gh-fg: #333333;              /* 正文文字：Typora 原值（GitHub 官方是更硬的 #1f2328） */
+  --gh-fg-muted: #59636e;        /* 次要文字 */
+  --gh-bg-muted: #eef0f2;        /* 代码块 / 表格隔行：比纸面略深，否则看不出来 */
+  --gh-border: #d1d9e0;          /* 表格线、引用左边框 */
+  --gh-link: #0969da;            /* 链接（你 Typora 里用的是旧版 #4183C4） */
+}
+
+.theme-dark {
+  --gh-page: #0d1117;            /* 暗色纸面：想更柔可改 #161b22 */
+  --gh-fg: #f0f6fc;              /* 想更柔可改 #c9d1d9（GitHub 旧版暗色文字） */
+  --gh-fg-muted: #9198a1;
+  --gh-bg-muted: #151b23;
+  --gh-border: #3d444d;
+  --gh-link: #4493f8;
+}
+
+/* 变量重映射：作用到笔记视图，避免影响侧边栏/弹窗
+   （若想让整个界面都变，把选择器换成 body 即可） */
+.markdown-preview-view,
+.markdown-source-view.mod-cm6 {
+  --text-normal: var(--gh-fg);
+  --text-muted: var(--gh-fg-muted);
+  --background-modifier-border: var(--gh-border);
+  --background-modifier-border-hover: var(--gh-border);
+  --background-secondary: var(--gh-bg-muted);
+  --code-background: var(--gh-bg-muted);
+  --link-color: var(--gh-link);
+  --link-color-hover: var(--gh-link);
+  --hr-color: var(--gh-border);
+}
+
+/* 笔记区背景：用 --gh-page，想更白/更暗只改上面那个变量
+   想完全交给主题管，就把下面两行注释掉 */
+.markdown-preview-view { background-color: var(--gh-page); }
+.markdown-source-view.mod-cm6 .cm-editor { background-color: var(--gh-page); }
+
+/* -----------------------------------------------------------------------------
+   2. 补 base.css 的两处缺口：编辑模式下的 h1/h2 下边框与 h5/h6 字号
+      （base.css 只覆盖了 HyperMD-header-1..4 的字号，且编辑模式没有下边框，
+        导致阅读模式和编辑模式观感不一致）
+   -------------------------------------------------------------------------- */
+.markdown-source-view.mod-cm6 .HyperMD-header-1 {
+  border-bottom: 1px solid var(--gh-border);
+  padding-bottom: 0.3em;
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-2 {
+  border-bottom: 1px solid var(--gh-border);
+  padding-bottom: 0.25em;
+}
+.markdown-source-view.mod-cm6 .HyperMD-header-5 { font-size: 1em; }
+.markdown-source-view.mod-cm6 .HyperMD-header-6 { font-size: 1em; }
+
+/* -----------------------------------------------------------------------------
+   3. 补 base.css 的另外三处缺口（都来自你 Typora 主题的习惯）
+   -------------------------------------------------------------------------- */
+
+/* 3.1 正文第一个列表的上边距（Typora: #write > ul:first-child { margin-top: 30px }） */
+.markdown-rendered > ul:first-child,
+.markdown-rendered > ol:first-child { margin-top: 30px; }
+
+/* 3.2 任务列表复选框对齐（Typora: -1.3em，Obsidian 里用更保守的值） */
+.markdown-rendered .task-list-item > input[type="checkbox"] { margin-left: -1.35em; }
+
+/* 3.3 打印样式（Typora: 字号降一档 + 避免表格/代码块跨页断开） */
+@media print {
+  html { font-size: 13px; }
+  .markdown-rendered table,
+  .markdown-rendered pre { page-break-inside: avoid; }
+  .markdown-rendered pre { white-space: pre-wrap; word-wrap: break-word; }
+}
+
+/* -----------------------------------------------------------------------------
+   4. 主题适配：Minimal
+   Minimal 不用 Obsidian 的 --file-line-width，而是自己的 --line-width（默认 40rem =
+   640px），所以 base.css 里的三档宽度在 Minimal 下会被它压回去，表现为左右留白过多。
+   这里把 --line-width 也拉到同一套档位。变量直接写在视图元素上，优先于 body 上的定义。
+   -------------------------------------------------------------------------- */
+.markdown-preview-view,
+.markdown-source-view.mod-cm6 {
+  --line-width: 860px;
+}
+
+@media only screen and (min-width: 1400px) {
+  .markdown-preview-view,
+  .markdown-source-view.mod-cm6 { --line-width: 1024px; }
+}
+
+@media only screen and (min-width: 1800px) {
+  .markdown-preview-view,
+  .markdown-source-view.mod-cm6 { --line-width: 1200px; }
+}
+
+@media only screen and (min-width: 2000px) {
+  .markdown-preview-view,
+  .markdown-source-view.mod-cm6 { --line-width: 1600px; }
+}
+
+/* 兜底：万一还是没生效，说明 Minimal 的规则优先级更高，
+   把下面这段打开（它和 Minimal 的选择器同名同权重，但片段在主题之后加载）
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer {
+  width: var(--line-width);
+  max-width: 88%;
+  margin-left: auto;
+  margin-right: auto;
+}
+*/
+
+/* 另一个选择：Minimal 原生支持按笔记加宽——在笔记 frontmatter 里写
+   cssclasses: wide   （或 max 占满整块）
+   适合个别宽表格/大图的笔记，不必全局改宽度。 */
+
+/* -----------------------------------------------------------------------------
+   5. 可选：想让链接变成你 Typora 里的旧蓝色，把下面注释打开
+   -------------------------------------------------------------------------- */
+/*
+.theme-light { --gh-link: #4183c4; }
+.theme-dark  { --gh-link: #4183c4; }
+*/
