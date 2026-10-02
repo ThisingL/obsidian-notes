@@ -1,8 +1,9 @@
 {
   "readableLineLength": true,
   "showLineNumber": false,
-  "newFileLocation": "root",
-  "attachmentFolderPath": "_attachments",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "notes",
+  "attachmentFolderPath": "attachments",
   "alwaysUpdateLinks": true,
   "useMarkdownLinks": true,
   "newLinkFormat": "relative",
