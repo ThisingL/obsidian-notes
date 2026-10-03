@@ -335,6 +335,35 @@ body {
     background-color: var(--gh-table-head, #eaeef2);
 }
 
+/* 表格靠左：这件事本来由主题自己完成，不需要 hack
+ *
+ * Obsidian 核心给表格容器设了 padding:16px + margin: 0 -16px !important，Minimal 则把
+ * 左右边距换成 var(--container-table-margin)（= 正文栏左侧 − 16px），两者效果一样：
+ * 容器左右各多出 16px，表格正好落在正文栏的左边界上。包在 table 外的 .table-wrapper
+ * 是 width: fit-content，本来就是左对齐，不要改它（把它改成 width:auto 会把单元格
+ * 右侧的“+列”按钮推到版心右边缘去）。
+ *
+ * ⚠️ 表格曾经“看着居中”的真正原因不在这里，而是 --line-width 被写在了视图元素上
+ * （body 层推导的容器几何按 640px 算、实际栏宽 860px，表格被推右 110px）——
+ * 已改在 github-markdown.css 第 4 节，变量必须定义在 body 层。
+ *
+ * 下面两条只是兜底：万一某个主题/版本用 margin:auto 把表格居中，还能拉回左边。
+ * 想真正居中：把 --table-margin 改成 auto，并删掉下面那条 margin-inline。
+ */
+.markdown-preview-view,
+.markdown-source-view.mod-cm6 {
+    --table-margin: 0;
+}
+
+/* 表格自身：宽度贴合内容，左边贴住正文。这条需要 !important，
+   因为 Minimal 引 var(--table-width) 的那条选择器权重很高（3 个类 + 1 个元素） */
+.markdown-rendered table,
+.markdown-preview-view table,
+.markdown-source-view.mod-cm6 table {
+    width: fit-content !important;
+    margin-inline: 0 !important;
+}
+
 /* 斑马纹：只数 tbody 的行，表头不参与计数 */
 .markdown-rendered table tbody tr:nth-child(2n),
 .markdown-preview-view table tbody tr:nth-child(2n),

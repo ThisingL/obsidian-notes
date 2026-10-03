@@ -27,6 +27,7 @@ attachments/    笔记引用的图片和 PDF
 - **改表格样子只需要动 `github-markdown.css` 里四个变量**：`--gh-table-border`（单元格线）、`--gh-table-head`（表头底）、`--gh-table-stripe`（隔行）、`--gh-table-hover`（行悬停，亮 `#e6d8f9` / 暗 `#3d2f5b`，写死的紫色系；想改成跟随强调色，见该处注释）。`base.css` 只引用这四个变量并带兜底值，不用改规则。
 - **换主题前先看两个文件的注释**：Minimal 默认一根表格线都不画、表格开关要靠 Style Settings 插件（本库没装），所以表格观感实际上由这两个片段提供；换主题后需复核 `base.css` 第 9 节与 `github-markdown.css` 第 1 节。
 - 其他关键设置：亮色基础色 `moonstone`、正文字号 20、字体 Hack、标准 Markdown 链接 + 相对路径、附件目录 `attachments`。
+- **正文栏宽度由 `github-markdown.css` 第 4 节的 `--line-width` 控制，且必须定义在 `body` 层**。Minimal 在 body 上根据它推导 `--content-margin-start`、`--container-table-margin` 等一整套几何变量，这些派生值在 body 层就完成了 `var()` 替换；若把 `--line-width` 写到 `.markdown-preview-view` 这类视图元素上，body 层仍按默认 640px 计算，而其中的百分比按真实栏宽解析，表格容器会被推右约 110px（表现为表格无法与正文左对齐）。
 
 ## 关于内容
 

@@ -113,37 +113,39 @@
    4. 主题适配：Minimal
    Minimal 不用 Obsidian 的 --file-line-width，而是自己的 --line-width（默认 40rem =
    640px），所以 base.css 里的三档宽度在 Minimal 下会被它压回去，表现为左右留白过多。
-   这里把 --line-width 也拉到同一套档位。变量直接写在视图元素上，优先于 body 上的定义。
+
+   ⚠️ --line-width 必须定义在 body 层，不能写在视图元素上。
+   Minimal 在 body 上根据它推导出一整套几何变量：
+     --content-margin-start: max(calc(50% - var(--line-width)/2), ...)
+     --container-table-margin: calc(var(--content-margin-start) - 拖拽留白)
+     --container-table-width: calc(var(--line-width) + 拖拽留白*2)
+   这些派生值在 body 层就完成了 var() 替换。若把 --line-width 写在视图元素上，
+   body 层算出来的派生值（按 640px）和实际栏宽（860px）就对不上，藏在里的百分比
+   50% 会按 860px 解析，结果表格容器被推右 110px —— 表现为“表格没法和正文左对齐/
+   看着居中”，而表格自身的样式怎么改都没用。
    -------------------------------------------------------------------------- */
-.markdown-preview-view,
-.markdown-source-view.mod-cm6 {
+body.theme-light,
+body.theme-dark {
   --line-width: 860px;
 }
 
 @media only screen and (min-width: 1400px) {
-  .markdown-preview-view,
-  .markdown-source-view.mod-cm6 { --line-width: 1024px; }
+  body.theme-light,
+  body.theme-dark { --line-width: 1024px; }
 }
 
 @media only screen and (min-width: 1800px) {
-  .markdown-preview-view,
-  .markdown-source-view.mod-cm6 { --line-width: 1200px; }
+  body.theme-light,
+  body.theme-dark { --line-width: 1200px; }
 }
 
 @media only screen and (min-width: 2000px) {
-  .markdown-preview-view,
-  .markdown-source-view.mod-cm6 { --line-width: 1600px; }
+  body.theme-light,
+  body.theme-dark { --line-width: 1600px; }
 }
 
-/* 兜底：万一还是没生效，说明 Minimal 的规则优先级更高，
-   把下面这段打开（它和 Minimal 的选择器同名同权重，但片段在主题之后加载）
-.markdown-preview-view.is-readable-line-width .markdown-preview-sizer {
-  width: var(--line-width);
-  max-width: 88%;
-  margin-left: auto;
-  margin-right: auto;
-}
-*/
+/* （旧版在这里留过一段 --line-width 的兜底规则，变量挪到 body 层后已不需要：
+   Minimal 用 var(--line-width) 的规则都在 body 的后代上，body 层定义就能生效。） */
 
 /* 另一个选择：Minimal 原生支持按笔记加宽——在笔记 frontmatter 里写
    cssclasses: wide   （或 max 占满整块）
