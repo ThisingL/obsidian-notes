@@ -289,31 +289,67 @@ body {
 
 /* =========================================================
  * 9. Table
- * ========================================================= */
+ * =========================================================
+ * 复刻 Typora github.css 的表格观感：细边框 + 表头底色 + 斑马纹 + 行悬停。
+ *
+ * 颜色不写在这里，而是引用 github-markdown.css 里的 --gh-table-* 变量（那个
+ * 片段负责配色，本文件只负责排版）。下面每条都带兜底值，单独停用配色片段也不会崩。
+ *
+ * 两个踩过的坑：
+ * 1. Minimal 主题默认一根表格线都不画（.table-lines / .row-lines / .row-alt
+ *    这些开关要靠 Style Settings 插件打开，本库没装），所以边框得自己画；
+ * 2. 表头底色必须明显区别于纸面色 --gh-page（#fafafa），用 #f8f8f8 这种
+ *    “比纸面还浅”的灰等于没有表头。
+ */
 
-.markdown-rendered table {
+.markdown-rendered table,
+.markdown-preview-view table,
+.markdown-source-view.mod-cm6 table {
     width: fit-content;
     max-width: 100%;
 
+    border: 1px solid var(--gh-table-border, #c3cbd4);
     border-collapse: collapse;
 
     word-break: initial;
+    margin: 0.8em 0;
 }
 
 .markdown-rendered table th,
-.markdown-rendered table td {
-    border: 1px solid var(--background-modifier-border);
+.markdown-rendered table td,
+.markdown-preview-view table th,
+.markdown-preview-view table td,
+.markdown-source-view.mod-cm6 table th,
+.markdown-source-view.mod-cm6 table td {
+    border: 1px solid var(--gh-table-border, #c3cbd4);
 
     padding: 6px 13px;
+    vertical-align: top;
 }
 
-.markdown-rendered table th {
-    font-weight: 400;
+.markdown-rendered table th,
+.markdown-preview-view table th,
+.markdown-source-view.mod-cm6 table th {
+    /* Typora 原版是 400（靠底色区分表头），这里加粗到 600，更好认 */
+    font-weight: 600;
+    background-color: var(--gh-table-head, #eaeef2);
 }
 
-.markdown-rendered table tr:nth-child(2n) {
-    background-color: var(--background-secondary);
+/* 斑马纹：只数 tbody 的行，表头不参与计数 */
+.markdown-rendered table tbody tr:nth-child(2n),
+.markdown-preview-view table tbody tr:nth-child(2n),
+.markdown-source-view.mod-cm6 table tbody tr:nth-child(2n) {
+    background-color: var(--gh-table-stripe, #f1f3f6);
 }
+
+/* 行悬停高亮：写在斑马纹之后，保证优先级更高 */
+.markdown-rendered table tbody tr:hover,
+.markdown-preview-view table tbody tr:hover,
+.markdown-source-view.mod-cm6 table tbody tr:hover {
+    background-color: var(--gh-table-hover, #e6d8f9);
+}
+
+/* 颜色统一在 github-markdown.css 的 --gh-table-* 里调，本文件不再定义色值 */
 
 
 /* =========================================================

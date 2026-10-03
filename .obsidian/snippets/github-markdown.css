@@ -27,6 +27,16 @@
   --gh-bg-muted: #eef0f2;        /* 代码块 / 表格隔行：比纸面略深，否则看不出来 */
   --gh-border: #d1d9e0;          /* 表格线、引用左边框 */
   --gh-link: #0969da;            /* 链接（你 Typora 里用的是旧版 #4183C4） */
+
+  /* 表格专用：比 --gh-border 更实一档，且必须明显区别于纸面色 --gh-page */
+  --gh-table-border: #c3cbd4;    /* 单元格线 */
+  --gh-table-head: #eaeef2;      /* 表头底色 */
+  --gh-table-stripe: #f1f3f6;    /* 隔行底色 */
+  --gh-table-hover: #e6d8f9;     /* 行悬停：#AC76F8 与纸面色 #fafafa 按 ~26% 混合后的实色
+                                    （Material 的 hover state layer 只叠 8%，这里按“要明显”加强到 26%；
+                                     用实色而非 alpha，避免斑马纹行与普通行叠出两种紫）
+                                    想淡一点：18% -> #ece2fa；想更重：32% -> #e1d0f9
+                                    想跟着主题强调色走：color-mix(in srgb, var(--interactive-accent) 26%, var(--gh-page)) */
 }
 
 .theme-dark {
@@ -36,6 +46,12 @@
   --gh-bg-muted: #151b23;
   --gh-border: #3d444d;
   --gh-link: #4493f8;
+
+  /* 表格专用（暗色）：底色都取 GitHub 暗色画布档位，保证在 --gh-page 上看得出来 */
+  --gh-table-border: #4b535d;
+  --gh-table-head: #21262d;
+  --gh-table-stripe: #161b22;
+  --gh-table-hover: #3d2f5b;     /* 行悬停（暗色）：#AC76F8 叠在 #0d1117 上约 30% 的实色 */
 }
 
 /* 变量重映射：作用到笔记视图，避免影响侧边栏/弹窗
