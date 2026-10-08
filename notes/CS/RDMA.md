@@ -2,7 +2,7 @@ RDMA(Remote Direct Memory Access)，远程直接内存访问。
 
 ## 概念
 
-![e99e04c8dcd33b4bffb552036dd22996](../attachments/e99e04c8dcd33b4bffb552036dd22996.png)
+![e99e04c8dcd33b4bffb552036dd22996](../../attachments/e99e04c8dcd33b4bffb552036dd22996.png)
 
 我们来捋一下**传统网络数据**传输需要哪些步骤：
 
@@ -34,7 +34,7 @@ RDMA(Remote Direct Memory Access)，远程直接内存访问。
 
 TOE(TCP Offloading Engine)，在主机通过网络进行的传输的过程中，CPU 需要耗费大量的资源进行多层网络协议的数据包处理，包括数据复制、协议处理和中断处理。为了将 CPU 从这些操作中解放出来，人们发明了 TOE 技术，将上述工作从 CPU 转移到了专门的网卡上。TOE 技术需要特定支持 Offloading 的网卡，这种特定网卡能够支持封装多层网络协议的数据包。
 
-![image-20260308231653846](../attachments/image-20260308231653846.png)
+![image-20260308231653846](../../attachments/image-20260308231653846.png)
 
 - TOE 技术将原来在协议栈中进行的IP 分片、TCP 分段、重组、checksum 校验等操作，转移到网卡硬件中进行，降低系统 CPU 的消耗，提高服务器处理性能。
     
@@ -71,7 +71,7 @@ RDMA 技术有以下几个特点：
 
 最后的数据包结构如下图所示：
 
-![image-20260308232335617](../attachments/image-20260308232335617.png)
+![image-20260308232335617](../../attachments/image-20260308232335617.png)
 
 报文结构（从左到右）
 
