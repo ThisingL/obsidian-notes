@@ -25,6 +25,8 @@ attachments/    笔记引用的图片和 PDF
   - `base.css`：只管排版（字号、行距、间距、标题），移植自 Typora 的 github 主题。
   - `github-markdown.css`：只管配色，把 Obsidian 变量重映射到 GitHub 调色板（`--gh-page`、`--gh-border`、`--gh-link` 等）。
 - **改表格样子只需要动 `github-markdown.css` 里四个变量**：`--gh-table-border`（单元格线）、`--gh-table-head`（表头底）、`--gh-table-stripe`（隔行）、`--gh-table-hover`（行悬停，亮 `#e6d8f9` / 暗 `#3d2f5b`，写死的紫色系；想改成跟随强调色，见该处注释）。`base.css` 只引用这四个变量并带兜底值，不用改规则。
+- **斑马纹开启**（`--gh-table-stripe`，亮 `#f1f3f6` / 暗 `#161b22`）。它在多列表格里的作用是把视线横向引到下一列、降串行风险；与纸面的分离度 9/7/4，与 GitHub 官方 `#ffffff -> #f6f8fa`（9/7/5）基本一致。窄表（≤3 列）收益小，但研究表明不会变差（Enders 三次实验：8 题中 3 题准确率显著提升）且多数人偏好，故全局保留。想关掉就把该变量改成与 `--gh-page` 同色。
+- **表头底色走 `--table-header-background`，不走 `base.css` 里的 `table th`**。Obsidian 核心有一条 `.markdown-rendered thead tr > th:nth-child(2n+2) { background-color: var(--table-column-alt-background) }`，而该变量默认 = `--table-background` = `transparent`；它权重（0,2,3）高于 `table th`（0,1,2），会把表头**偶数列**擦成透明，表现为表头灰白相间。所以在 `github-markdown.css` 第 1 节把 `--table-header-background` 指向 `--gh-table-head`，底色画在 `thead tr` 上，偶数列的透明 th 正好透出来。`--table-header-background-hover` 必须一起设（默认值 `inherit`，不设则鼠标移上去表头掉色）。
 - **换主题前先看两个文件的注释**：Minimal 默认一根表格线都不画、表格开关要靠 Style Settings 插件（本库没装），所以表格观感实际上由这两个片段提供；换主题后需复核 `base.css` 第 9 节与 `github-markdown.css` 第 1 节。
 - 其他关键设置：亮色基础色 `moonstone`、正文字号 20、字体 Hack、标准 Markdown 链接 + 相对路径、附件目录 `attachments`。
 - **正文栏宽度由 `github-markdown.css` 第 4 节的 `--line-width` 控制，且必须定义在 `body` 层**。Minimal 在 body 上根据它推导 `--content-margin-start`、`--container-table-margin` 等一整套几何变量，这些派生值在 body 层就完成了 `var()` 替换；若把 `--line-width` 写到 `.markdown-preview-view` 这类视图元素上，body 层仍按默认 640px 计算，而其中的百分比按真实栏宽解析，表格容器会被推右约 110px（表现为表格无法与正文左对齐）。

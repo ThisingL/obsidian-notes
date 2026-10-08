@@ -31,10 +31,17 @@
   /* 表格专用：比 --gh-border 更实一档，且必须明显区别于纸面色 --gh-page */
   --gh-table-border: #c3cbd4;    /* 单元格线 */
   --gh-table-head: #eaeef2;      /* 表头底色 */
-  --gh-table-stripe: #f1f3f6;    /* 隔行底色 */
+  --gh-table-stripe: #f1f3f6;    /* 隔行底色（斑马纹，已启用）。
+                                    与纸面的分离度是 9/7/4，和 GitHub 官方
+                                    #ffffff -> #f6f8fa（9/7/5）基本一致。
+                                    作用：多列表格里引导视线横向追踪、不串行；
+                                    Tufte 也承认条纹比细线更能把视线引到下一列。
+                                    窄表（≤3 列）收益很小，但研究表明不会变差、
+                                    且多数人主观偏好，所以全局保留。
+                                    想关掉：改成与 --gh-page 同值即可 */
   --gh-table-hover: #e6d8f9;     /* 行悬停：#AC76F8 与纸面色 #fafafa 按 ~26% 混合后的实色
                                     （Material 的 hover state layer 只叠 8%，这里按“要明显”加强到 26%；
-                                     用实色而非 alpha，避免斑马纹行与普通行叠出两种紫）
+                                     用实色而非 alpha，避免与其它行底色叠出两种紫）
                                     想淡一点：18% -> #ece2fa；想更重：32% -> #e1d0f9
                                     想跟着主题强调色走：color-mix(in srgb, var(--interactive-accent) 26%, var(--gh-page)) */
 }
@@ -50,7 +57,7 @@
   /* 表格专用（暗色）：底色都取 GitHub 暗色画布档位，保证在 --gh-page 上看得出来 */
   --gh-table-border: #4b535d;
   --gh-table-head: #21262d;
-  --gh-table-stripe: #161b22;
+  --gh-table-stripe: #161b22;    /* 隔行底色（斑马纹，已启用；理由见亮色段同名字段） */
   --gh-table-hover: #3d2f5b;     /* 行悬停（暗色）：#AC76F8 叠在 #0d1117 上约 30% 的实色 */
 }
 
@@ -67,6 +74,21 @@
   --link-color: var(--gh-link);
   --link-color-hover: var(--gh-link);
   --hr-color: var(--gh-border);
+
+  /* 表头底色：必须走 Obsidian 自带的 --table-header-background，不要在 base.css 里
+     自己写 thead/tr 规则去跟核心拼权重。核心的规则链是：
+       .markdown-rendered thead tr        { background-color: var(--table-header-background); }
+       .markdown-rendered thead tr:hover  { background-color: var(--table-header-background-hover); }
+       .markdown-rendered thead tr > th:nth-child(2n+2) {
+                                            background-color: var(--table-column-alt-background); }
+     第三条会把【偶数列】的 th 涂成 --table-column-alt-background，而它默认等于
+     --table-background = transparent。权重 0,2,3 高于 base.css 里 `table th` 的 0,1,2，
+     于是表头被擦成灰白相间（实证：截图像素分析里，表头列底色是 灰/白/灰/白/灰/白/灰）。
+     把底色交给 --table-header-background（写在 tr 上）就绕开了：偶数列 th 是 transparent，
+     正好透出行底色。
+     -hover 必须一起设：它的默认值是 inherit，不设的话鼠标移上表头就掉色。 */
+  --table-header-background: var(--gh-table-head);
+  --table-header-background-hover: var(--gh-table-head);
 }
 
 /* 笔记区背景：用 --gh-page，想更白/更暗只改上面那个变量

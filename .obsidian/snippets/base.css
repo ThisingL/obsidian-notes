@@ -291,6 +291,8 @@ body {
  * 9. Table
  * =========================================================
  * 复刻 Typora github.css 的表格观感：细边框 + 表头底色 + 斑马纹 + 行悬停。
+ * 斑马纹的作用是多列时的横向视线引导（降串行风险），色值由配色片段的
+ * --gh-table-stripe 控制，本文件只引用不定义。
  *
  * 颜色不写在这里，而是引用 github-markdown.css 里的 --gh-table-* 变量（那个
  * 片段负责配色，本文件只负责排版）。下面每条都带兜底值，单独停用配色片段也不会崩。
@@ -332,6 +334,11 @@ body {
 .markdown-source-view.mod-cm6 table th {
     /* Typora 原版是 400（靠底色区分表头），这里加粗到 600，更好认 */
     font-weight: 600;
+    /* 这里的底色只是兜底。真正生效的是 Obsidian 的 --table-header-background
+     * （定义在 github-markdown.css 第 1 节，画在 thead tr 上）：核心有一条
+     *     .markdown-rendered thead tr > th:nth-child(2n+2) { background: 列交替底色 }
+     * 权重 0,2,3 高于本规则的 0,1,2，会把偶数列的 th 掠成 transparent。
+     * 所以表头不能只有这一条，否则就是灰白相间的。 */
     background-color: var(--gh-table-head, #eaeef2);
 }
 
@@ -364,7 +371,9 @@ body {
     margin-inline: 0 !important;
 }
 
-/* 斑马纹：只数 tbody 的行，表头不参与计数 */
+/* 斑马纹：只数 tbody 的行，表头不参与计数——限定 tbody 是必须的：不加的话
+ * 表头会被算进序列，条纹起点整体错位一格，表头一有色下面的深浅就全反了。
+ * 兜底值给一个能看的灰色：配色片段被停用时，表格仍然保持可读。 */
 .markdown-rendered table tbody tr:nth-child(2n),
 .markdown-preview-view table tbody tr:nth-child(2n),
 .markdown-source-view.mod-cm6 table tbody tr:nth-child(2n) {
